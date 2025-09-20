@@ -1,6 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = parseInt(params.id)
+    
+    const barang = await prisma.barang.findUnique({
+      where: { id },
+      include: {
+        subItems: true,
+      },
+    })
+
+    if (!barang) {
+      return NextResponse.json(
+        { error: 'Barang not found' },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json(barang)
+  } catch (error) {
+    console.error('Error fetching barang:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch barang' },
+      { status: 500 }
+    )
+  }
+}
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
