@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Tabel Barang: Menyimpan daftar barang/bahan
+model Barang {
+  id        Int       @id @default(autoincrement())
+  produk    String
+  ukuran    String
+  quantity  Int
+  nominal   Int
+  fixPrize  Int
+  subItems  SubItem[] // Relasi ke SubItem
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// Tabel SubItem: Detail kebutuhan per barang
+model SubItem {
+  id        Int    @id @default(autoincrement())
+  barang    Barang @relation(fields: [barangId], references: [id], onDelete: Cascade)
+  barangId  Int
+  namaSubItem String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Tabel Pemasukan: Mencatat uang masuk
+model Pemasukan {
+  id         Int      @id @default(autoincrement())
+  tanggal    DateTime
+  penyumbang String
+  keterangan String   // Changed from enum to String for SQLite compatibility
+  nominal    Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
