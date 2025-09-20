@@ -1,4 +1,3 @@
-import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
@@ -6,7 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Japanese Club Manager',
   description: 'Website Manajemen Keuangan & Inventaris Club Jepang',
 }
